@@ -1,17 +1,14 @@
 # teleco-churn
 ML Task for Predicting Customer Churn for a Teleco
 
-# Install requirements
-```commandline
-pip install -r requirements.txt
-```
+## Dataset
+The dataset is from this Kaggle repo https://www.kaggle.com/datasets/shilongzhuang/telecom-customer-churn-by-maven-analytics
 
-# Training Results
-The notebook Teleco-Churn-Prediction.ipynb has the main preprocessing, training and evaluation results.
+## Training Results
+The notebook [Teleco-Churn-Prediction.ipynb](Teleco-Churn-Prediction.ipynb) has the main preprocessing, training and evaluation results.
 
-# Discussion & Recommendations
-1. Model Selection
-XGBoost appears to be the best performing model overall based on the metrics:
+## Discussion & Recommendations
+XGBoost is the best performing model overall based on the metrics:
 
 Accuracy: Highest at 83.83%  
 Precision: Highest at 87.85%  
@@ -19,11 +16,11 @@ Recall: Highest at 90.56%
 F1-score: Highest at 89.18%  
 AUC-ROC: Highest at 89.19%  
 
-#### Why XGBoost?
+### Why XGBoost?
 XGBoost consistently outperforms the other models across all metrics, especially in recall, which is critical in a churn prediction context where catching all possible churn cases (high recall) is crucial.
 The AUC-ROC score of XGBoost is also the highest, indicating better performance in distinguishing between churned and non-churned customers.
 
-#### Recommendations
+### Recommendations
 1. Model Evaluation and Validation
 Further Evaluation: Although XGBoost performs best, we can validate its performance further by using techniques such as cross-validation and ensuring there is no overfitting.
 Hyperparameter Tuning: We might explore hyperparameter tuning for XGBoost to potentially improve its performance even further.
@@ -37,28 +34,18 @@ Monitor and Update: We should continuously monitor the model's performance and u
 Ensemble Methods: We can Consider using ensemble methods like stacking models if computational resources allow. This can potentially combine the strengths of different models to achieve even better performance.
 Customer Segmentation: We should use the model's predictions to segment customers into different risk categories and tailor retention strategies accordingly.
 
-# Model Serving & Deployment
+## Model Serving & Deployment
 To integrate the best model (xgboost) with existing systems, we can create a REST API that takes in customer data and returns the 
 model prediction. We can then containerize this service and deploy it.  
-To illustrate this I have built a simple FastAPI App and deployed it on a fly.io VM. 
+To illustrate this I have built a simple FastAPI App and deployed it on a fly.io VM.
 
-# Run the server with Python
-First, provide a `.env` file with keys:
-```text
-MODEL_PATH='best_xgboost.joblib'
-PREPROCESSOR_PATH='preprocessor_pipeline.joblib'
-```
+### Make a POST Request (To the live API) for Churn Prediction:
 
-Run the dev server:
-```commandline
-uvicorn main:app --port 8080 --reload
-```
+Note: This VM has `auto_stop` so it might take a few seconds to spin up and respond. 
 
-Make a POST Request (Live API):
-Note 
 ```shell
-curl --location 'http://localhost:8080/predict'
---header 'Content-Type: application/json'
+curl --location 'https://telcom.fly.dev/predict' \
+--header 'Content-Type: application/json' \
 --data '{
   "Gender": "Male",
   "Married": "No",
@@ -94,8 +81,30 @@ curl --location 'http://localhost:8080/predict'
 }'
 ```
 
-# Deploy via Dockerfile to fly.io
+## Run the server (locally) with Python
+First install requirements
+```commandline
+pip install -r requirements.txt
+```
+
+Next, provide a `.env` file with keys:
+```text
+MODEL_PATH='best_xgboost.joblib'
+PREPROCESSOR_PATH='preprocessor_pipeline.joblib'
+```
+
+Run the dev server:
+```commandline
+uvicorn main:app --port 8080 --reload
+```
+
+## Deploy via Dockerfile to fly.io
 Based on this https://fly.io/docs/languages-and-frameworks/dockerfile/
+
+Create the fly app
+```commandline
+ fly apps create telcom
+```
 
 The launch command is optional since there is a `fly.toml` file already
 ```commandline
@@ -107,7 +116,7 @@ deploy app
 fly deploy --ha=false
 ```
 
-#### Optional
+### Optional
 scale the memory
 ```commandline
 flyctl scale memory 2048 -a tlb

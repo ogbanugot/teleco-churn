@@ -1,4 +1,4 @@
-app = "telcomod"
+app = "telcom"
 primary_region = "jnb"
 
 [build]
@@ -13,7 +13,7 @@ primary_region = "jnb"
 
 [env]
   MODEL_PATH = "best_xgboost.joblib"
-  PREPROCESSOR_PATH = "best_xgboost.joblib"
+  PREPROCESSOR_PATH = "preprocessor_pipeline.joblib"
 
 [experimental]
-  cmd = ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080", "--workers", "5"]
+  cmd = ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080", "--workers", "2"]

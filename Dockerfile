@@ -13,13 +13,13 @@ RUN apt-get update \
     && pip install --no-cache-dir --upgrade -r /app/requirements.txt
 
 # Second Stage: Slim Python Image
-FROM python:3.9-slim AS final
+FROM python:3.8-slim AS final
 
 # Set working directory
 WORKDIR /app
 
 # Copy from base image
-COPY --from=base /usr/local/lib/python3.9/site-packages/ /usr/local/lib/python3.9/site-packages/
+COPY --from=base /usr/local/lib/python3.8/site-packages/ /usr/local/lib/python3.8/site-packages/
 COPY --from=base /usr/local/bin/ /usr/local/bin/
 
 # Install additional system dependencies
@@ -33,7 +33,8 @@ RUN apt-get update \
 COPY ./ /app
 
 # Download the model file
-RUN wget https://github.com/download/v0.1.0/best.pt
+RUN wget https://github.com/ogbanugot/teleco-churn/releases/download/v0.1.0/best_xgboost.joblib
+RUN wget https://github.com/ogbanugot/teleco-churn/releases/download/v0.1.0/preprocessor_pipeline.joblib
 
 # Expose port
 EXPOSE 8080
