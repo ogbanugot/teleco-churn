@@ -17,7 +17,7 @@ F1-score: Highest at 89.18%
 AUC-ROC: Highest at 89.19%  
 
 ### Why XGBoost?
-XGBoost consistently outperforms the other models across all metrics, especially in recall, which is critical in a churn prediction context where catching all possible churn cases (high recall) is crucial.
+XGBoost consistently outperforms the other models across all metrics, especially in precision and recall, which is critical in a churn prediction context where catching all possible churn cases is crucial.
 The AUC-ROC score of XGBoost is also the highest, indicating better performance in distinguishing between churned and non-churned customers.
 
 ### Recommendations
