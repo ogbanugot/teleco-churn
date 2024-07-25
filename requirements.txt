@@ -8,3 +8,5 @@ slowapi~=0.1.9
 requests~=2.31.0
 joblib~=1.2.0
 pandas~=1.5.3
+xgboost~=2.1.0
+scikit-learn~=1.0.2
